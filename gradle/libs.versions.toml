@@ -1,0 +1,40 @@
+[versions]
+architectury-loom = "1.9-SNAPSHOT"
+architectury-plugin = "3.4-SNAPSHOT"
+shadowJar = "9.0.0-beta10"
+minecraft = "1.21.4"
+fabricLoader = "0.16.10"
+architecturyApi = "15.0.1"
+fabricApi = "0.116.1+1.21.4"
+neoForge = "21.4.89-beta"
+kotlin-version = "2.1.10"
+kotlin-serializationJson = "1.8.0"
+adventureMiniMessage = "4.18.0"
+adventurePlatform = "6.2.0"
+kotlinx-datetime = "0.6.2"
+okhttp = "4.12.0"
+
+[libraries]
+kotlin-serializationJson = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlin-serializationJson" }
+minecraft = { module = "net.minecraft:minecraft", version.ref = "minecraft" }
+fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabricLoader" }
+architectury-api = { module = "dev.architectury:architectury", version.ref = "architecturyApi" }
+fabric-api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabricApi" }
+architectury-fabric = { module = "dev.architectury:architectury-fabric", version.ref = "architecturyApi" }
+architectury-neoForge = { module = "dev.architectury:architectury-neoforge", version.ref = "architecturyApi" }
+neoForge = { module = "net.neoforged:neoforge", version.ref = "neoForge" }
+
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
+adventure-minimessage = { module = "net.kyori:adventure-text-minimessage", version.ref = "adventureMiniMessage" }
+adventure-legacy = { module = "net.kyori:adventure-text-serializer-legacy", version.ref = "adventureMiniMessage" }
+adventure-platform-shared = { module = "net.kyori:adventure-platform-mod-shared", version.ref = "adventurePlatform" }
+adventure-platform-fabric = { module = "net.kyori:adventure-platform-fabric", version.ref = "adventurePlatform" }
+adventure-platform-neoforge = { module = "net.kyori:adventure-platform-neoforge", version.ref = "adventurePlatform" }
+
+[plugins]
+architectury-loom = { id = "dev.architectury.loom", version.ref = "architectury-loom" }
+architectury-plugin = { id = "architectury-plugin", version.ref = "architectury-plugin" }
+shadowJar = { id = "com.gradleup.shadow", version.ref = "shadowJar" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-version" }
+kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-version" }

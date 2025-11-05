@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "package": "com.wynnscribe.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "minVersion": "0.8",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "AbstractContainerScreenMixin",
+    "ChatComponentMixin",
+    "ScreenMixin"
+  ],
+  "mixins": [
+    "ActivityModelMixin",
+    "ItemStackMixin",
+    "TextDisplayMixin"
+  ]
+}

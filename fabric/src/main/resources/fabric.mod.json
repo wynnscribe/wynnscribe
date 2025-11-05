@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "wynnscribe",
+  "version": "${version}",
+  "name": "Wynnscribe",
+  "description": "",
+  "authors": [
+    "saxy_cuba"
+  ],
+  "contact": {
+    "homepage": "https://x.com/moruch4nn"
+  },
+  "license": "MIT",
+  "icon": "icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "com.wynnscribe.fabric.WynnscribeFabric"
+    ]
+  },
+  "mixins": [
+    "wynnscribe.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.10",
+    "minecraft": "~1.21.4",
+    "java": ">=21",
+    "fabric-api": "*",
+    "wynntils": ">=3.3.1"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}

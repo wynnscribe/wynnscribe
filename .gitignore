@@ -1,0 +1,110 @@
+# === Gradle ===
+# Gradle build output directory
+/build/
+
+# Gradle cache directory
+.gradle/
+
+.sessions/
+
+exports/
+
+data.db
+
+/libs
+
+# Exclude Gradle wrapper JAR file (optional, some teams commit this)
+# Keep gradlew and gradlew.bat!
+gradle/wrapper/gradle-wrapper.jar
+
+# Gradle daemon logs
+*.log
+/out/
+
+# Environment variables
+# Never commit sensitive keys!
+.env*
+!.env.example
+!.env.template
+
+# === Minecraft / Modding ===
+# Minecraft run directories (client/server test environments)
+# Matches run directories anywhere (e.g., /run, /fabric/run, /neoforge/run)
+run/
+runs/
+dev/
+
+# Logs generated during runtime (anywhere in the project)
+logs/
+
+# User generated files within run directories (anywhere)
+run/config/
+run/saves/
+run/resourcepacks/
+run/shaderpacks/
+run/mods/
+run/options.txt
+run/usercache.json
+run/usernamecache.json
+run/launcher_profiles.json
+run/launcher_accounts.json
+run/realms_persistence.json
+
+# Compiled JAR files (build artifacts)
+*.jar
+
+# === IDE ===
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Visual Studio Code
+.vscode/
+# Allow shared settings if desired
+# !.vscode/settings.json
+# !.vscode/tasks.json
+# !.vscode/launch.json
+# !.vscode/extensions.json
+# *.code-workspace
+
+# Eclipse
+.classpath
+.project
+.settings/
+*.prefs
+
+# NetBeans
+nbproject/
+private/
+
+# === Operating System ===
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# === Other ===
+# Temporary files
+*~
+*.tmp
+*.bak
+*.swp
+
+
+# プロジェクトの除外パス
+/apiServer/build/
+/apiServer/build/classes/kotlin/main/
+/common/build/
+/common/build/classes/kotlin/main/
+/commonMod/build/
+/commonMod/build/classes/java/main/
+/fabric/build/
+/fabric/build/classes/java/main/
+/neoforge/build/
