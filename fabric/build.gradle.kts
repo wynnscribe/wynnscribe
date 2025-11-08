@@ -90,7 +90,6 @@ tasks.shadowJar {
     archiveClassifier.set("dev-shadow")
     relocate("kotlinx", "com.wynnscribe.libs.kotlinx")
     relocate("kotlin", "com.wynnscribe.libs.kotlin")
-    relocate("net.kyori", "com.wynnscribe.libs.net.kyori")
 }
 
 tasks.remapJar {
