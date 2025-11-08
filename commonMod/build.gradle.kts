@@ -18,6 +18,5 @@ dependencies {
     compileOnly(libs.adventure.minimessage)
     compileOnly(libs.adventure.legacy)
     implementation(libs.kotlin.serializationJson)
-    compileOnly(libs.okhttp)
     compileOnly(libs.kotlinx.datetime)
 }

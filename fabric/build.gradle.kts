@@ -57,8 +57,6 @@ dependencies {
     "shadowBundle"(libs.adventure.legacy)
     implementation(libs.kotlin.serializationJson)
     "shadowBundle"(libs.kotlin.serializationJson)
-    implementation(libs.okhttp)
-    "shadowBundle"(libs.okhttp)
     implementation(libs.kotlinx.datetime)
     "shadowBundle"(libs.kotlinx.datetime)
 
@@ -90,6 +88,9 @@ tasks.processResources {
 tasks.shadowJar {
     configurations = listOf(project.configurations.getByName("shadowBundle"))
     archiveClassifier.set("dev-shadow")
+    relocate("kotlinx", "com.wynnscribe.libs.kotlinx")
+    relocate("kotlin", "com.wynnscribe.libs.kotlin")
+    relocate("net.kyori", "com.wynnscribe.libs.net.kyori")
 }
 
 tasks.remapJar {
