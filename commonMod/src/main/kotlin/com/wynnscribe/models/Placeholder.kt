@@ -1,7 +1,7 @@
 package com.wynnscribe.models
 
 import com.wynnscribe.Translator
-import com.wynnscribe.schemas.ExportedTranslationSchema
+import com.wynnscribe.schemas.TranslationRepository
 import com.wynnscribe.utils.escapeGroupingRegex
 import com.wynnscribe.utils.escapeRegex
 
@@ -16,12 +16,12 @@ interface Placeholder<T> {
     /**
      * パースされたtagをHolderに変換します。
      */
-    fun holder(tag: ParsedTag, source: ExportedTranslationSchema.Category.Source, categories: List<ExportedTranslationSchema.Category>, struct: Translator.StructMode): Compiled.Holder<T>
+    fun holder(tag: ParsedTag, source: TranslationRepository.Translations.Category.Source, categories: List<TranslationRepository.Translations.Category>, struct: Translator.StructMode): Compiled.Holder<T>
 
     /**
      * このプレースホルダの正規表現をコンパイル(生成)します。
      */
-    fun compile(holders: List<Compiled.Holder<*>>, source: ExportedTranslationSchema.Category.Source): Compiled<T> {
+    fun compile(holders: List<Compiled.Holder<*>>, source: TranslationRepository.Translations.Category.Source): Compiled<T> {
         val matcher = source.properties.matcher
         if(matcher == null || "{${tag}" !in matcher) { return Compiled(null, emptyList()) }
         val myHolders = mutableListOf<Compiled.Holder<T>>()
@@ -44,7 +44,7 @@ interface Placeholder<T> {
         return Compiled(patternStr.toRegex(), myHolders)
     }
 
-    fun on(translation: String, sourceText: String, source: ExportedTranslationSchema.Category.Source, categories: List<ExportedTranslationSchema.Category>, struct: Translator.StructMode): String
+    fun on(translation: String, sourceText: String, source: TranslationRepository.Translations.Category.Source, categories: List<TranslationRepository.Translations.Category>, struct: Translator.StructMode): String
 
     class ParsedTag(val key: String, val value: String?) {
         constructor(list: List<String>): this(list[0], list.getOrNull(1))

@@ -5,7 +5,7 @@ import com.wynnscribe.DeveloperUtils
 import com.wynnscribe.mixins.HasHoveredSlot
 import com.wynnscribe.mixins.HasHoveredSlot.Companion.hoveredSlot
 import com.wynnscribe.Translator
-import com.wynnscribe.api.API
+import com.wynnscribe.schemas.TranslationRepository
 import com.wynntils.mc.event.ItemTooltipRenderEvent
 import com.wynntils.mc.extension.ItemStackExtension
 import com.wynntils.models.items.items.game.*
@@ -20,7 +20,7 @@ import net.neoforged.bus.api.SubscribeEvent
 class EventHandler {
     @SubscribeEvent(receiveCanceled = true, priority = EventPriority.LOW)
     fun on(event: ItemTooltipRenderEvent.Pre) {
-        if(!API.isLoaded()) { return }
+        if(!TranslationRepository.isLoaded()) { return }
         if(!Config.enabled) { return }
         DeveloperUtils.lastHoveredLore = event.tooltips
         // ItemStackのWynntilsの形式に変更
@@ -29,15 +29,16 @@ class EventHandler {
         val annotation = extension.annotation
         val screen = Minecraft.getInstance().screen
         if(screen is HasHoveredSlot) {
-            val container = screen.hoveredSlot()?.container
-            if(container !is Inventory) {
-                val inventoryName = screen.title
-                when(Translator.PlainTextSerializer.serialize(MinecraftClientAudiences.of().asAdventure(inventoryName))) {
-                    "\uDAFF\uDFEA\uE000" -> {
-                        event.guiGraphics
+            val inventoryName = screen.title
+            when(Translator.PlainTextSerializer.serialize(MinecraftClientAudiences.of().asAdventure(inventoryName))) {
+                "\uDAFF\uDFEA\uE000" -> {
+                    val container = screen.hoveredSlot()?.container
+                    if(container is Inventory) {
+                        event.tooltips = Translator.translateItemStackOrCached(event.itemStack, event.tooltips, "#wynnscribe.ability")
+                    } else {
                         event.tooltips = Translator.translateAbilityOrCached(event.itemStack, event.tooltips)
-                        return
                     }
+                    return
                 }
             }
         }

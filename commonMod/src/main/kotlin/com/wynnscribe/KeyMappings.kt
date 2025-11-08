@@ -25,7 +25,7 @@ object KeyMappings {
 
     fun handleClick(keyCode: Int, scanCode: Int) {
         this.inventoryMappings.forEach(Consumer { keyMapping: RegisteredKeyMapping? ->
-            if (keyMapping!!.matches(keyCode, scanCode)) {
+            if (keyMapping?.matches(keyCode, scanCode) == true) {
                 keyMapping.run()
             }
         })

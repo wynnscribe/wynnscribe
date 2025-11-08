@@ -1,5 +1,6 @@
 package com.wynnscribe.mixin;
 
+import com.wynnscribe.ThreadExecutorsKt;
 import com.wynnscribe.Translator;
 import com.wynntils.core.text.StyledText;
 import com.wynntils.models.activities.ActivityModel;
@@ -31,7 +32,7 @@ public class ActivityModelMixin {
         if(this.wynnscribeKt$translatedText == null || !Objects.equals(component, this.wynnscribeKt$old)) {
             this.wynnscribeKt$old = component;
             var info = new ArrayList<Component>(Collections.singletonList(component));
-            new Thread(() -> Translator.INSTANCE.translateActivity(info)).start();
+            ThreadExecutorsKt.getThreadExecutors().execute(()-> Translator.INSTANCE.translateActivity(info));
             this.wynnscribeKt$translatedText = info;
         }
         if(this.wynnscribeKt$translatedText.isEmpty()) { return; }

@@ -3,7 +3,7 @@ package com.wynnscribe
 import com.wynnscribe.models.Placeholder
 import com.wynnscribe.models.Placeholder.Companion.TAG_PATTERN
 import com.wynnscribe.models.Placeholder.ParsedTag
-import com.wynnscribe.schemas.ExportedTranslationSchema
+import com.wynnscribe.schemas.TranslationRepository
 import com.wynnscribe.utils.escapeGroupingRegex
 import com.wynnscribe.utils.escapeRegex
 import net.kyori.adventure.text.Component
@@ -19,14 +19,14 @@ sealed interface Placeholders {
         /**
          * この翻訳をキーとしてreplaceするためのreplace keyを返します。
          */
-        fun pattern(source: ExportedTranslationSchema.Category.Source, categories: List<ExportedTranslationSchema.Category>, struct: Translator.StructMode): Regex? {
+        fun pattern(source: TranslationRepository.Translations.Category.Source, categories: List<TranslationRepository.Translations.Category>, struct: Translator.StructMode): Regex? {
             return returningCompileAll(source, categories, _InternalCompiler, struct = struct).regex
         }
 
         /**
          * プレースホルダーの一覧を取得します。
          */
-        fun holders(source: ExportedTranslationSchema.Category.Source, categories: List<ExportedTranslationSchema.Category>, struct: Translator.StructMode): List<Placeholder.Compiled.Holder<*>> {
+        fun holders(source: TranslationRepository.Translations.Category.Source, categories: List<TranslationRepository.Translations.Category>, struct: Translator.StructMode): List<Placeholder.Compiled.Holder<*>> {
             val matches = TAG_PATTERN.findAll(source.properties.matcher?:return emptyList())
             val tags = matches.map { ParsedTag(it.groupValues[1].split(":", limit = 2)) }
             val groups = mutableListOf<Placeholder.Compiled.Holder<*>>()
@@ -39,7 +39,7 @@ sealed interface Placeholders {
         /**
          * すべてのプレースホルダーをコンパイルします。
          */
-        fun compileAll(source: ExportedTranslationSchema.Category.Source, categories: List<ExportedTranslationSchema.Category>, struct: Translator.StructMode = Translator.StructMode.None) {
+        fun compileAll(source: TranslationRepository.Translations.Category.Source, categories: List<TranslationRepository.Translations.Category>, struct: Translator.StructMode = Translator.StructMode.None) {
             val holders = this.holders(source, categories, struct = struct)
             val regexes = source.regexes ?: return
             regexes.placeholder(_InternalCompiler) { _InternalCompiler.compile(holders, source) }
@@ -52,7 +52,7 @@ sealed interface Placeholders {
          * すべてのプレースホルダーをコンパイルします。
          * 更に引数で指定したプレースホルダも返します。
          */
-        fun <T> returningCompileAll(source: ExportedTranslationSchema.Category.Source, categories: List<ExportedTranslationSchema.Category>, placeholder: Placeholder<T>, struct: Translator.StructMode): Placeholder.Compiled<T> {
+        fun <T> returningCompileAll(source: TranslationRepository.Translations.Category.Source, categories: List<TranslationRepository.Translations.Category>, placeholder: Placeholder<T>, struct: Translator.StructMode): Placeholder.Compiled<T> {
             this.compileAll(source, categories)
             return source.regexes?.placeholder(placeholder) { placeholder.compile(holders(source, categories, struct = struct), source) }?: Placeholder.Compiled(null, emptyList())
         }
@@ -60,7 +60,7 @@ sealed interface Placeholders {
         /**
          * プレースホルダを埋める処理に使います。
          */
-        fun on(translation: String, sourceText: String, source: ExportedTranslationSchema.Category.Source, categories: List<ExportedTranslationSchema.Category>, struct: Translator.StructMode): String {
+        fun on(translation: String, sourceText: String, source: TranslationRepository.Translations.Category.Source, categories: List<TranslationRepository.Translations.Category>, struct: Translator.StructMode): String {
             var translated = translation
             entries.values.forEach { placeholder ->
                 translated = placeholder.on(translated, sourceText, source, categories, struct = struct)
@@ -77,8 +77,8 @@ sealed interface Placeholders {
 
         override fun holder(
             tag: ParsedTag,
-            source: ExportedTranslationSchema.Category.Source,
-            categories: List<ExportedTranslationSchema.Category>,
+            source: TranslationRepository.Translations.Category.Source,
+            categories: List<TranslationRepository.Translations.Category>,
             struct: Translator.StructMode
         ): Placeholder.Compiled.Holder<Nothing> {
             return Placeholder.Compiled.Holder(tag.value!!, this, null)
@@ -87,8 +87,8 @@ sealed interface Placeholders {
         override fun on(
             translation: String,
             sourceText: String,
-            source: ExportedTranslationSchema.Category.Source,
-            categories: List<ExportedTranslationSchema.Category>,
+            source: TranslationRepository.Translations.Category.Source,
+            categories: List<TranslationRepository.Translations.Category>,
             struct: Translator.StructMode
         ): String {
             val regex = source.regexes?.placeholder<Nothing>(this) { returningCompileAll(source, categories, this, struct = struct) }?.regex?:return translation
@@ -109,8 +109,8 @@ sealed interface Placeholders {
 
         override fun holder(
             tag: ParsedTag,
-            source: ExportedTranslationSchema.Category.Source,
-            categories: List<ExportedTranslationSchema.Category>,
+            source: TranslationRepository.Translations.Category.Source,
+            categories: List<TranslationRepository.Translations.Category>,
             struct: Translator.StructMode
         ): Placeholder.Compiled.Holder<Nothing> {
             return Placeholder.Compiled.Holder(Minecraft.getInstance().user.name, this, null)
@@ -119,8 +119,8 @@ sealed interface Placeholders {
         override fun on(
             translation: String,
             sourceText: String,
-            source: ExportedTranslationSchema.Category.Source,
-            categories: List<ExportedTranslationSchema.Category>,
+            source: TranslationRepository.Translations.Category.Source,
+            categories: List<TranslationRepository.Translations.Category>,
             struct: Translator.StructMode
         ): String {
             return translation.replaceFirst("{player}", Minecraft.getInstance().user.name)
@@ -136,8 +136,8 @@ sealed interface Placeholders {
 
         override fun holder(
             tag: ParsedTag,
-            source: ExportedTranslationSchema.Category.Source,
-            categories: List<ExportedTranslationSchema.Category>,
+            source: TranslationRepository.Translations.Category.Source,
+            categories: List<TranslationRepository.Translations.Category>,
             struct: Translator.StructMode
         ): Placeholder.Compiled.Holder<Translator.FilterValue> {
             val project = tag.value!!
@@ -153,8 +153,8 @@ sealed interface Placeholders {
         override fun on(
             translation: String,
             sourceText: String,
-            source: ExportedTranslationSchema.Category.Source,
-            categories: List<ExportedTranslationSchema.Category>,
+            source: TranslationRepository.Translations.Category.Source,
+            categories: List<TranslationRepository.Translations.Category>,
             struct: Translator.StructMode
         ): String {
             val placeholder = source.regexes?.placeholder(this) { returningCompileAll(source, categories, this, struct = struct) }?:return translation
@@ -180,8 +180,8 @@ sealed interface Placeholders {
 
         override fun holder(
             tag: ParsedTag,
-            source: ExportedTranslationSchema.Category.Source,
-            categories: List<ExportedTranslationSchema.Category>,
+            source: TranslationRepository.Translations.Category.Source,
+            categories: List<TranslationRepository.Translations.Category>,
             struct: Translator.StructMode
         ): Placeholder.Compiled.Holder<Nothing> {
             // 使われることはないのでエラー
@@ -191,8 +191,8 @@ sealed interface Placeholders {
         override fun on(
             translation: String,
             sourceText: String,
-            source: ExportedTranslationSchema.Category.Source,
-            categories: List<ExportedTranslationSchema.Category>,
+            source: TranslationRepository.Translations.Category.Source,
+            categories: List<TranslationRepository.Translations.Category>,
             struct: Translator.StructMode
         ): String {
             // 使われることはないのでエラー
@@ -202,7 +202,7 @@ sealed interface Placeholders {
         /**
          * すべてのグループをエスケープする
          */
-        override fun compile(holders: List<Placeholder.Compiled.Holder<*>>, source: ExportedTranslationSchema.Category.Source): Placeholder.Compiled<Nothing> {
+        override fun compile(holders: List<Placeholder.Compiled.Holder<*>>, source: TranslationRepository.Translations.Category.Source): Placeholder.Compiled<Nothing> {
             val patternStr = buildString {
                 Placeholder.TAG_PATTERN.split(source.properties.matcher?: return Placeholder.Compiled(null, emptyList())).forEachIndexed { index, str ->
                     append(escapeRegex(str))
